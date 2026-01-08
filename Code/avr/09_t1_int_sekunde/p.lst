@@ -1,0 +1,165 @@
+   1               		.file	"p.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               	.global	__vector_15
+  13               	__vector_15:
+  14               	.LFB0:
+  15               		.file 1 "p.c"
+   1:p.c           **** #include <avr/io.h>
+   2:p.c           **** #include <avr/interrupt.h>
+   3:p.c           **** 
+   4:p.c           **** #define SET_LED_ON (PORTD |= 1)
+   5:p.c           **** #define SET_LED_OFF (PORTD &= ~1)
+   6:p.c           **** #define TOGGLE_LED (PORTD ^= 1)
+   7:p.c           **** 
+   8:p.c           **** ISR(TIMER1_OVF_vect)
+   9:p.c           **** {
+  16               		.loc 1 9 1 view -0
+  17               		.cfi_startproc
+  18 0000 8F93 8FB7 		__gcc_isr 1
+  18      8F93 
+  19 0006 9F93      		push r25
+  20               	.LCFI0:
+  21               		.cfi_def_cfa_offset 3
+  22               		.cfi_offset 25, -2
+  23               	/* prologue: Signal */
+  24               	/* frame size = 0 */
+  25               	/* stack size = 1...5 */
+  26               	.L__stack_usage = 1 + __gcc_isr.n_pushed
+  10:p.c           ****     TOGGLE_LED;
+  27               		.loc 1 10 5 view .LVU1
+  28 0008 8BB1      		in r24,0xb
+  29 000a 91E0      		ldi r25,lo8(1)
+  30 000c 8927      		eor r24,r25
+  31 000e 8BB9      		out 0xb,r24
+  11:p.c           ****     TCNT1 = 46004;
+  32               		.loc 1 11 5 view .LVU2
+  33               		.loc 1 11 11 is_stmt 0 view .LVU3
+  34 0010 84EB      		ldi r24,lo8(-76)
+  35 0012 93EB      		ldi r25,lo8(-77)
+  36 0014 9093 8500 		sts 132+1,r25
+  37 0018 8093 8400 		sts 132,r24
+  38               	/* epilogue start */
+  12:p.c           **** }
+  39               		.loc 1 12 1 view .LVU4
+  40 001c 9F91      		pop r25
+  41 001e 8F91 8FBF 		__gcc_isr 2
+  41      8F91 
+  42 0024 1895      		reti
+  43               		__gcc_isr 0,r24
+  44               		.cfi_endproc
+  45               	.LFE0:
+  47               		.section	.text.startup,"ax",@progbits
+  48               	.global	main
+  50               	main:
+  51               	.LFB1:
+  13:p.c           **** 
+  14:p.c           **** int main(void)
+  15:p.c           **** {
+  52               		.loc 1 15 1 is_stmt 1 view -0
+  53               		.cfi_startproc
+  54               	/* prologue: function */
+  55               	/* frame size = 0 */
+  56               	/* stack size = 0 */
+  57               	.L__stack_usage = 0
+  16:p.c           ****     DDRD = 1;
+  58               		.loc 1 16 5 view .LVU6
+  59               		.loc 1 16 10 is_stmt 0 view .LVU7
+  60 0000 91E0      		ldi r25,lo8(1)
+  61 0002 9AB9      		out 0xa,r25
+  17:p.c           ****     SREG |= 128; // Activates globally Interrupts
+  62               		.loc 1 17 5 is_stmt 1 view .LVU8
+  63               		.loc 1 17 10 is_stmt 0 view .LVU9
+  64 0004 8FB7      		in r24,__SREG__
+  65 0006 8068      		ori r24,lo8(-128)
+  66 0008 8FBF      		out __SREG__,r24
+  18:p.c           ****     TIMSK1 = 1; // Activates Timer
+  67               		.loc 1 18 5 is_stmt 1 view .LVU10
+  68               		.loc 1 18 12 is_stmt 0 view .LVU11
+  69 000a 9093 6F00 		sts 111,r25
+  19:p.c           ****     TCCR1B = 5; // Taktung vom Timer
+  70               		.loc 1 19 5 is_stmt 1 view .LVU12
+  71               		.loc 1 19 12 is_stmt 0 view .LVU13
+  72 000e 85E0      		ldi r24,lo8(5)
+  73 0010 8093 8100 		sts 129,r24
+  20:p.c           **** 
+  21:p.c           ****     // 20.000.000MHZ / 1024 = 19531 (Zahlen hochgezählt pro Sekunde) 
+  22:p.c           ****     // 2^16-1-19531=46004
+  23:p.c           ****     TCNT1 = 46004;
+  74               		.loc 1 23 5 is_stmt 1 view .LVU14
+  75               		.loc 1 23 11 is_stmt 0 view .LVU15
+  76 0014 84EB      		ldi r24,lo8(-76)
+  77 0016 93EB      		ldi r25,lo8(-77)
+  78 0018 9093 8500 		sts 132+1,r25
+  79 001c 8093 8400 		sts 132,r24
+  80               	.L3:
+  24:p.c           **** 
+  25:p.c           ****     while(1);
+  81               		.loc 1 25 5 is_stmt 1 discriminator 1 view .LVU16
+  82               		.loc 1 25 13 discriminator 1 view .LVU17
+  83               		.loc 1 25 10 discriminator 1 view .LVU18
+  84 0020 00C0      		rjmp .L3
+  85               		.cfi_endproc
+  86               	.LFE1:
+  88               		.text
+  89               	.Letext0:
+  90               		.file 2 "/opt/homebrew/Cellar/avr-gcc@9/9.5.0/avr/include/stdint.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 p.c
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:2      *ABS*:0000003e __SP_H__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:3      *ABS*:0000003d __SP_L__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:4      *ABS*:0000003f __SREG__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:5      *ABS*:0000003b __RAMPZ__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:6      *ABS*:00000000 __tmp_reg__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:7      *ABS*:00000001 __zero_reg__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:13     .text:00000000 __vector_15
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:16     .text:00000000 .Loc.0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:17     .text:00000000 L0
+                            *ABS*:00000002 __gcc_isr.n_pushed.001
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:27     .text:00000008 .Loc.1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:32     .text:00000010 .Loc.2
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:33     .text:00000010 .Loc.3
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:39     .text:0000001c .Loc.4
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:44     .text:00000026 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:50     .text.startup:00000000 main
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:52     .text.startup:00000000 .Loc.5
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:53     .text.startup:00000000 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:58     .text.startup:00000000 .Loc.6
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:59     .text.startup:00000000 .Loc.7
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:62     .text.startup:00000004 .Loc.8
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:63     .text.startup:00000004 .Loc.9
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:67     .text.startup:0000000a .Loc.10
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:68     .text.startup:0000000a .Loc.11
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:70     .text.startup:0000000e .Loc.12
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:71     .text.startup:0000000e .Loc.13
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:74     .text.startup:00000014 .Loc.14
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:75     .text.startup:00000014 .Loc.15
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:81     .text.startup:00000020 .Loc.16
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:82     .text.startup:00000020 .Loc.17
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:83     .text.startup:00000020 .Loc.18
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:85     .text.startup:00000022 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:91     .text:00000026 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:88     .text.startup:00000022 L0
+                     .debug_frame:00000000 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:80     .text.startup:00000020 .L3
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:178    .debug_abbrev:00000000 .Ldebug_abbrev0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:322    .debug_ranges:00000000 .Ldebug_ranges0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:330    .debug_line:00000000 .Ldebug_line0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:51     .text.startup:00000000 .LFB1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:86     .text.startup:00000022 .LFE1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:14     .text:00000000 .LFB0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:45     .text:00000026 .LFE0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:292    .debug_loc:00000000 .LLST0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:20     .text:00000008 .LCFI0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:92     .debug_info:00000000 .Ldebug_info0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:9      .text:00000000 .Ltext0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccbFJ2oz.s:89     .text:00000026 .Letext0
+
+NO UNDEFINED SYMBOLS
