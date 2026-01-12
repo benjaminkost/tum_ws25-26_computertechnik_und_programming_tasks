@@ -1,0 +1,286 @@
+   1               		.file	"p.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               	.global	__vector_1
+  13               	__vector_1:
+  14               	.LFB0:
+  15               		.file 1 "p.c"
+   1:p.c           **** #include <avr/io.h>
+   2:p.c           **** #include <avr/interrupt.h>
+   3:p.c           **** 
+   4:p.c           **** #define DREHGEBER_DELTA 100
+   5:p.c           **** 
+   6:p.c           **** // Taktrate Prozessor: 20 MHz => 1 Takt (1 cycle) dauert 50 ns
+   7:p.c           **** 
+   8:p.c           **** 
+   9:p.c           **** #define DREHGEBER_DELTA	100
+  10:p.c           **** 
+  11:p.c           **** 
+  12:p.c           **** // Drehgeber
+  13:p.c           **** 
+  14:p.c           **** ISR(INT0_vect)
+  15:p.c           **** {
+  16               		.loc 1 15 1 view -0
+  17               		.cfi_startproc
+  18 0000 2F93 2FB7 		__gcc_isr 1
+  18      2F93 
+  19 0006 8F93      		push r24
+  20               	.LCFI0:
+  21               		.cfi_def_cfa_offset 3
+  22               		.cfi_offset 24, -2
+  23 0008 9F93      		push r25
+  24               	.LCFI1:
+  25               		.cfi_def_cfa_offset 4
+  26               		.cfi_offset 25, -3
+  27               	/* prologue: Signal */
+  28               	/* frame size = 0 */
+  29               	/* stack size = 2...6 */
+  30               	.L__stack_usage = 2 + __gcc_isr.n_pushed
+  16:p.c           **** 	// Linksdrehung
+  17:p.c           **** 
+  18:p.c           **** 		if(PIND & 2){
+  31               		.loc 1 18 3 view .LVU1
+  32               		.loc 1 18 5 is_stmt 0 view .LVU2
+  33 000a 499B      		sbis 0x9,1
+  34 000c 00C0      		rjmp .L2
+  19:p.c           **** 			if (OCR1A <=6250){
+  35               		.loc 1 19 4 is_stmt 1 view .LVU3
+  36               		.loc 1 19 8 is_stmt 0 view .LVU4
+  37 000e 8091 8800 		lds r24,136
+  38 0012 9091 8900 		lds r25,136+1
+  39               		.loc 1 19 7 view .LVU5
+  40 0016 8B36      		cpi r24,107
+  41 0018 9841      		sbci r25,24
+  42 001a 00F4      		brsh .L1
+  20:p.c           **** 				OCR1A +=3750/100;
+  43               		.loc 1 20 5 is_stmt 1 view .LVU6
+  44               		.loc 1 20 11 is_stmt 0 view .LVU7
+  45 001c 8091 8800 		lds r24,136
+  46 0020 9091 8900 		lds r25,136+1
+  47 0024 8596      		adiw r24,37
+  48               	.L4:
+  21:p.c           **** 			}
+  22:p.c           **** 		} else { 	// Rechtsdrehung
+  23:p.c           **** 			if (OCR1A >= 1250){
+  24:p.c           **** 			OCR1A -=3750/100;
+  49               		.loc 1 24 10 view .LVU8
+  50 0026 9093 8900 		sts 136+1,r25
+  51 002a 8093 8800 		sts 136,r24
+  52               	.L1:
+  53               	/* epilogue start */
+  25:p.c           **** 			}
+  26:p.c           **** 	}
+  27:p.c           **** 
+  28:p.c           **** }
+  54               		.loc 1 28 1 view .LVU9
+  55 002e 9F91      		pop r25
+  56 0030 8F91      		pop r24
+  57 0032 2F91 2FBF 		__gcc_isr 2
+  57      2F91 
+  58 0038 1895      		reti
+  59               	.L2:
+  23:p.c           **** 			OCR1A -=3750/100;
+  60               		.loc 1 23 4 is_stmt 1 view .LVU10
+  23:p.c           **** 			OCR1A -=3750/100;
+  61               		.loc 1 23 8 is_stmt 0 view .LVU11
+  62 003a 8091 8800 		lds r24,136
+  63 003e 9091 8900 		lds r25,136+1
+  23:p.c           **** 			OCR1A -=3750/100;
+  64               		.loc 1 23 7 view .LVU12
+  65 0042 823E      		cpi r24,-30
+  66 0044 9440      		sbci r25,4
+  67 0046 00F0      		brlo .L1
+  24:p.c           **** 			}
+  68               		.loc 1 24 4 is_stmt 1 view .LVU13
+  24:p.c           **** 			}
+  69               		.loc 1 24 10 is_stmt 0 view .LVU14
+  70 0048 8091 8800 		lds r24,136
+  71 004c 9091 8900 		lds r25,136+1
+  72 0050 8597      		sbiw r24,37
+  73 0052 00C0      		rjmp .L4
+  74               		__gcc_isr 0,r18
+  75               		.cfi_endproc
+  76               	.LFE0:
+  78               		.section	.text.startup,"ax",@progbits
+  79               	.global	main
+  81               	main:
+  82               	.LFB1:
+  29:p.c           **** 
+  30:p.c           **** 
+  31:p.c           **** int main(void)
+  32:p.c           **** {
+  83               		.loc 1 32 1 is_stmt 1 view -0
+  84               		.cfi_startproc
+  85               	/* prologue: function */
+  86               	/* frame size = 0 */
+  87               	/* stack size = 0 */
+  88               	.L__stack_usage = 0
+  33:p.c           **** 
+  34:p.c           **** 	DDRD = 32;	// PD5 als Ausgang (OC1A)
+  89               		.loc 1 34 2 view .LVU16
+  90               		.loc 1 34 7 is_stmt 0 view .LVU17
+  91 0000 80E2      		ldi r24,lo8(32)
+  92 0002 8AB9      		out 0xa,r24
+  35:p.c           **** 
+  36:p.c           **** 	// Interrupts global freischalten
+  37:p.c           **** 	SREG = 128;
+  93               		.loc 1 37 2 is_stmt 1 view .LVU18
+  94               		.loc 1 37 7 is_stmt 0 view .LVU19
+  95 0004 80E8      		ldi r24,lo8(-128)
+  96 0006 8FBF      		out __SREG__,r24
+  38:p.c           **** 
+  39:p.c           **** 	// Drehgeber
+  40:p.c           **** 	EIMSK = 1;		// INT0 Interrupt freischalten
+  97               		.loc 1 40 2 is_stmt 1 view .LVU20
+  98               		.loc 1 40 8 is_stmt 0 view .LVU21
+  99 0008 81E0      		ldi r24,lo8(1)
+ 100 000a 8DBB      		out 0x1d,r24
+  41:p.c           **** 	EICRA = 3;		// Für INT0 steigende Flanke als Auslöser auswähle
+ 101               		.loc 1 41 2 is_stmt 1 view .LVU22
+ 102               		.loc 1 41 8 is_stmt 0 view .LVU23
+ 103 000c 83E0      		ldi r24,lo8(3)
+ 104 000e 8093 6900 		sts 105,r24
+  42:p.c           **** 
+  43:p.c           **** 
+  44:p.c           **** 	// Fast-PWM-Mode einstellen
+  45:p.c           **** 	TCCR1A |=0x02; // WGM10 = 0, WGM11 = 1
+ 105               		.loc 1 45 2 is_stmt 1 view .LVU24
+ 106               		.loc 1 45 9 is_stmt 0 view .LVU25
+ 107 0012 8091 8000 		lds r24,128
+ 108 0016 8260      		ori r24,lo8(2)
+ 109 0018 8093 8000 		sts 128,r24
+  46:p.c           **** 	TCCR1B |=0x18; // WGM12 = 1, WGM13 = 1
+ 110               		.loc 1 46 2 is_stmt 1 view .LVU26
+ 111               		.loc 1 46 9 is_stmt 0 view .LVU27
+ 112 001c 8091 8100 		lds r24,129
+ 113 0020 8861      		ori r24,lo8(24)
+ 114 0022 8093 8100 		sts 129,r24
+  47:p.c           **** 
+  48:p.c           **** 	TCCR1B |=2; // prescaler auf clk/8
+ 115               		.loc 1 48 2 is_stmt 1 view .LVU28
+ 116               		.loc 1 48 9 is_stmt 0 view .LVU29
+ 117 0026 8091 8100 		lds r24,129
+ 118 002a 8260      		ori r24,lo8(2)
+ 119 002c 8093 8100 		sts 129,r24
+  49:p.c           **** 	TCCR1A |=0x80; // wenn TCNT1 0 ist High + Pulsweite abhängig von Wert 
+ 120               		.loc 1 49 2 is_stmt 1 view .LVU30
+ 121               		.loc 1 49 9 is_stmt 0 view .LVU31
+ 122 0030 8091 8000 		lds r24,128
+ 123 0034 8068      		ori r24,lo8(-128)
+ 124 0036 8093 8000 		sts 128,r24
+  50:p.c           **** 
+  51:p.c           **** 
+  52:p.c           ****     // Periodenlänge 20 ms mit ICR1 einstellen
+  53:p.c           **** 	ICR1=50000;
+ 125               		.loc 1 53 2 is_stmt 1 view .LVU32
+ 126               		.loc 1 53 6 is_stmt 0 view .LVU33
+ 127 003a 80E5      		ldi r24,lo8(80)
+ 128 003c 93EC      		ldi r25,lo8(-61)
+ 129 003e 9093 8700 		sts 134+1,r25
+ 130 0042 8093 8600 		sts 134,r24
+  54:p.c           **** 
+  55:p.c           ****     // Servo-Mittenposition mit OCR1A einstellen
+  56:p.c           ****     // PWM-High-Pegel hat 1,5 ms
+  57:p.c           **** 	OCR1A=3750;
+ 131               		.loc 1 57 2 is_stmt 1 view .LVU34
+ 132               		.loc 1 57 7 is_stmt 0 view .LVU35
+ 133 0046 86EA      		ldi r24,lo8(-90)
+ 134 0048 9EE0      		ldi r25,lo8(14)
+ 135 004a 9093 8900 		sts 136+1,r25
+ 136 004e 8093 8800 		sts 136,r24
+ 137               	.L6:
+  58:p.c           **** 
+  59:p.c           ****     // Endlosschleife
+  60:p.c           ****     while(1);
+ 138               		.loc 1 60 5 is_stmt 1 discriminator 1 view .LVU36
+ 139               		.loc 1 60 13 discriminator 1 view .LVU37
+ 140               		.loc 1 60 10 discriminator 1 view .LVU38
+ 141 0052 00C0      		rjmp .L6
+ 142               		.cfi_endproc
+ 143               	.LFE1:
+ 145               		.text
+ 146               	.Letext0:
+ 147               		.file 2 "/opt/homebrew/Cellar/avr-gcc@9/9.5.0/avr/include/stdint.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 p.c
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:2      *ABS*:0000003e __SP_H__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:3      *ABS*:0000003d __SP_L__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:4      *ABS*:0000003f __SREG__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:5      *ABS*:0000003b __RAMPZ__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:6      *ABS*:00000000 __tmp_reg__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:7      *ABS*:00000001 __zero_reg__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:13     .text:00000000 __vector_1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:16     .text:00000000 .Loc.0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:17     .text:00000000 L0
+                            *ABS*:00000002 __gcc_isr.n_pushed.001
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:31     .text:0000000a .Loc.1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:32     .text:0000000a .Loc.2
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:35     .text:0000000e .Loc.3
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:36     .text:0000000e .Loc.4
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:39     .text:00000016 .Loc.5
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:43     .text:0000001c .Loc.6
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:44     .text:0000001c .Loc.7
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:49     .text:00000026 .Loc.8
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:54     .text:0000002e .Loc.9
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:60     .text:0000003a .Loc.10
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:61     .text:0000003a .Loc.11
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:64     .text:00000042 .Loc.12
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:68     .text:00000048 .Loc.13
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:69     .text:00000048 .Loc.14
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:75     .text:00000054 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:81     .text.startup:00000000 main
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:83     .text.startup:00000000 .Loc.15
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:84     .text.startup:00000000 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:89     .text.startup:00000000 .Loc.16
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:90     .text.startup:00000000 .Loc.17
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:93     .text.startup:00000004 .Loc.18
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:94     .text.startup:00000004 .Loc.19
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:97     .text.startup:00000008 .Loc.20
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:98     .text.startup:00000008 .Loc.21
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:101    .text.startup:0000000c .Loc.22
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:102    .text.startup:0000000c .Loc.23
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:105    .text.startup:00000012 .Loc.24
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:106    .text.startup:00000012 .Loc.25
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:110    .text.startup:0000001c .Loc.26
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:111    .text.startup:0000001c .Loc.27
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:115    .text.startup:00000026 .Loc.28
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:116    .text.startup:00000026 .Loc.29
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:120    .text.startup:00000030 .Loc.30
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:121    .text.startup:00000030 .Loc.31
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:125    .text.startup:0000003a .Loc.32
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:126    .text.startup:0000003a .Loc.33
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:131    .text.startup:00000046 .Loc.34
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:132    .text.startup:00000046 .Loc.35
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:138    .text.startup:00000052 .Loc.36
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:139    .text.startup:00000052 .Loc.37
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:140    .text.startup:00000052 .Loc.38
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:142    .text.startup:00000054 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:148    .text:00000054 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:145    .text.startup:00000054 L0
+                     .debug_frame:00000000 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:59     .text:0000003a .L2
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:52     .text:0000002e .L1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:48     .text:00000026 .L4
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:137    .text.startup:00000052 .L6
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:235    .debug_abbrev:00000000 .Ldebug_abbrev0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:385    .debug_ranges:00000000 .Ldebug_ranges0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:393    .debug_line:00000000 .Ldebug_line0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:82     .text.startup:00000000 .LFB1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:143    .text.startup:00000054 .LFE1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:14     .text:00000000 .LFB0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:76     .text:00000054 .LFE0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:349    .debug_loc:00000000 .LLST0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:20     .text:00000008 .LCFI0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:24     .text:0000000a .LCFI1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:149    .debug_info:00000000 .Ldebug_info0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:9      .text:00000000 .Ltext0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//ccLvpzw1.s:146    .text:00000054 .Letext0
+
+NO UNDEFINED SYMBOLS
