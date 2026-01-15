@@ -7,10 +7,9 @@ int main()
 	// Geben Sie hier den Code an, mit dem Sie die einzelnen
 	// Bytes 0x01, 0x23, 0x45, ... jeweils in einer eigenen
 	// Zeile ausgeben, beginnend bei der Adresse l
-	char* p = (unsigned char*)&l;
+	unsigned char* p = (unsigned char*) &l;
 
 	for(int i = 0; i < sizeof(long); i++){
-		printf("0x%x\n", *(p+i));
+		printf("%#04x\n", *(p+i));
 	}
-
 }

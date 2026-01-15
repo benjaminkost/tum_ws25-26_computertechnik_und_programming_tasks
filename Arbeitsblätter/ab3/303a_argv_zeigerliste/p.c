@@ -11,7 +11,6 @@ int main(int argc, char * argv[])
 
 	// Hier Code zur Ausgabe der Adressen angeben,
 	// an denen die Zeiger der Zeigerliste stehen.
-
-
-
+	for(int i = 0; i <= argc; i++)
+		printf("&argv[%d]: %p\n", i, &argv[i]);
 }
