@@ -12,11 +12,11 @@ int main()
 	Song song;
 
 	// Name einlesen
-	printf("Songname: ");
+	printf("Name: ");
     scanf("%20s", song.name);
 
 	// Dauer einlesen
-	printf("Dauer: ");
+	printf("Duration: ");
 	scanf("%i", &song.duration);
 
 
