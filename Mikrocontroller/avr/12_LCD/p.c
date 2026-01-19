@@ -4,44 +4,33 @@
 // Taktrate Prozessor: 20 MHz => 1 Takt (1 cycle) dauert 50 ns
 
 #define TOGGLE_LED (PORTD ^= 1)
-
-
-
-
-
-
-
-
-
-
+#define SET_VDC_ON (PORTB |= 8)
+#define SET_VDC_OFF (PORTB &= ~8)
+#define SET_RS 
+#define SET_RW 
+#define SET_E 
+#define CLEAR_E 
 
 void wait_ms(unsigned long ms)
 {
-
-
-
-
-
+	volatile unsigned long i,j;
+	for(i = 0;i < ms; i++){
+		for(j = 0; j < 554;j++);
+	}
 }
 
 
 void lcd_reset(void)
 {
+	DDRB = 0xFF;
+	PORTB = 0;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	SET_VDC_ON;
+	wait_ms(20);
+	SET_VDC_OFF;
+	wait_ms(20);
+	SET_VDC_ON;
+	wait_ms(20);
 }
 
 

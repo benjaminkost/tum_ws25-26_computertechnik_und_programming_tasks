@@ -1,0 +1,947 @@
+   1               		.file	"p.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               	.global	wait_ms
+  13               	wait_ms:
+  14               	.LVL0:
+  15               	.LFB0:
+  16               		.file 1 "p.c"
+   1:p.c           **** #include <avr/io.h>
+   2:p.c           **** // #include <printf.h>
+   3:p.c           **** 
+   4:p.c           **** // Taktrate Prozessor: 20 MHz => 1 Takt (1 cycle) dauert 50 ns
+   5:p.c           **** 
+   6:p.c           **** #define TOGGLE_LED (PORTD ^= 1)
+   7:p.c           **** #define SET_VDC_ON (PORTB |= 8)
+   8:p.c           **** #define SET_VDC_OFF (PORTB &= ~8)
+   9:p.c           **** 
+  10:p.c           **** void wait_ms(unsigned long ms)
+  11:p.c           **** {
+  17               		.loc 1 11 1 view -0
+  18               		.cfi_startproc
+  19               		.loc 1 11 1 is_stmt 0 view .LVU1
+  20 0000 CF93      		push r28
+  21               	.LCFI0:
+  22               		.cfi_def_cfa_offset 3
+  23               		.cfi_offset 28, -2
+  24 0002 DF93      		push r29
+  25               	.LCFI1:
+  26               		.cfi_def_cfa_offset 4
+  27               		.cfi_offset 29, -3
+  28 0004 CDB7      		in r28,__SP_L__
+  29 0006 DEB7      		in r29,__SP_H__
+  30               	.LCFI2:
+  31               		.cfi_def_cfa_register 28
+  32 0008 2897      		sbiw r28,8
+  33               	.LCFI3:
+  34               		.cfi_def_cfa_offset 12
+  35 000a 0FB6      		in __tmp_reg__,__SREG__
+  36 000c F894      		cli
+  37 000e DEBF      		out __SP_H__,r29
+  38 0010 0FBE      		out __SREG__,__tmp_reg__
+  39 0012 CDBF      		out __SP_L__,r28
+  40               	/* prologue: function */
+  41               	/* frame size = 8 */
+  42               	/* stack size = 10 */
+  43               	.L__stack_usage = 10
+  44 0014 462F      		mov r20,r22
+  45 0016 572F      		mov r21,r23
+  46 0018 BC01      		movw r22,r24
+  47               	.LVL1:
+  12:p.c           **** 	volatile unsigned long i,j;
+  48               		.loc 1 12 2 is_stmt 1 view .LVU2
+  13:p.c           **** 	for(i = 0;i < ms; i++){
+  49               		.loc 1 13 2 view .LVU3
+  50               		.loc 1 13 8 is_stmt 0 view .LVU4
+  51 001a 1D82      		std Y+5,__zero_reg__
+  52 001c 1E82      		std Y+6,__zero_reg__
+  53 001e 1F82      		std Y+7,__zero_reg__
+  54 0020 1886      		std Y+8,__zero_reg__
+  55               	.L2:
+  56               		.loc 1 13 12 is_stmt 1 discriminator 1 view .LVU5
+  57               		.loc 1 13 14 is_stmt 0 discriminator 1 view .LVU6
+  58 0022 8D81      		ldd r24,Y+5
+  59 0024 9E81      		ldd r25,Y+6
+  60 0026 AF81      		ldd r26,Y+7
+  61 0028 B885      		ldd r27,Y+8
+  62               		.loc 1 13 2 discriminator 1 view .LVU7
+  63 002a 8417      		cp r24,r20
+  64 002c 9507      		cpc r25,r21
+  65 002e A607      		cpc r26,r22
+  66 0030 B707      		cpc r27,r23
+  67 0032 00F0      		brlo .L5
+  68               	/* epilogue start */
+  14:p.c           **** 		for(j = 0; j < 554;j++);
+  15:p.c           **** 	}
+  16:p.c           **** }
+  69               		.loc 1 16 1 view .LVU8
+  70 0034 2896      		adiw r28,8
+  71 0036 0FB6      		in __tmp_reg__,__SREG__
+  72 0038 F894      		cli
+  73 003a DEBF      		out __SP_H__,r29
+  74 003c 0FBE      		out __SREG__,__tmp_reg__
+  75 003e CDBF      		out __SP_L__,r28
+  76 0040 DF91      		pop r29
+  77 0042 CF91      		pop r28
+  78 0044 0895      		ret
+  79               	.L5:
+  14:p.c           **** 		for(j = 0; j < 554;j++);
+  80               		.loc 1 14 3 is_stmt 1 view .LVU9
+  14:p.c           **** 		for(j = 0; j < 554;j++);
+  81               		.loc 1 14 9 is_stmt 0 view .LVU10
+  82 0046 1982      		std Y+1,__zero_reg__
+  83 0048 1A82      		std Y+2,__zero_reg__
+  84 004a 1B82      		std Y+3,__zero_reg__
+  85 004c 1C82      		std Y+4,__zero_reg__
+  86               	.L3:
+  14:p.c           **** 		for(j = 0; j < 554;j++);
+  87               		.loc 1 14 14 is_stmt 1 discriminator 1 view .LVU11
+  14:p.c           **** 		for(j = 0; j < 554;j++);
+  88               		.loc 1 14 16 is_stmt 0 discriminator 1 view .LVU12
+  89 004e 8981      		ldd r24,Y+1
+  90 0050 9A81      		ldd r25,Y+2
+  91 0052 AB81      		ldd r26,Y+3
+  92 0054 BC81      		ldd r27,Y+4
+  14:p.c           **** 		for(j = 0; j < 554;j++);
+  93               		.loc 1 14 3 discriminator 1 view .LVU13
+  94 0056 8A32      		cpi r24,42
+  95 0058 9240      		sbci r25,2
+  96 005a A105      		cpc r26,__zero_reg__
+  97 005c B105      		cpc r27,__zero_reg__
+  98 005e 00F0      		brlo .L4
+  13:p.c           **** 	for(i = 0;i < ms; i++){
+  99               		.loc 1 13 20 is_stmt 1 discriminator 2 view .LVU14
+  13:p.c           **** 	for(i = 0;i < ms; i++){
+ 100               		.loc 1 13 21 is_stmt 0 discriminator 2 view .LVU15
+ 101 0060 8D81      		ldd r24,Y+5
+ 102 0062 9E81      		ldd r25,Y+6
+ 103 0064 AF81      		ldd r26,Y+7
+ 104 0066 B885      		ldd r27,Y+8
+ 105 0068 0196      		adiw r24,1
+ 106 006a A11D      		adc r26,__zero_reg__
+ 107 006c B11D      		adc r27,__zero_reg__
+ 108 006e 8D83      		std Y+5,r24
+ 109 0070 9E83      		std Y+6,r25
+ 110 0072 AF83      		std Y+7,r26
+ 111 0074 B887      		std Y+8,r27
+ 112 0076 00C0      		rjmp .L2
+ 113               	.L4:
+  14:p.c           **** 		for(j = 0; j < 554;j++);
+ 114               		.loc 1 14 26 is_stmt 1 discriminator 3 view .LVU16
+  14:p.c           **** 		for(j = 0; j < 554;j++);
+ 115               		.loc 1 14 22 discriminator 3 view .LVU17
+  14:p.c           **** 		for(j = 0; j < 554;j++);
+ 116               		.loc 1 14 23 is_stmt 0 discriminator 3 view .LVU18
+ 117 0078 8981      		ldd r24,Y+1
+ 118 007a 9A81      		ldd r25,Y+2
+ 119 007c AB81      		ldd r26,Y+3
+ 120 007e BC81      		ldd r27,Y+4
+ 121 0080 0196      		adiw r24,1
+ 122 0082 A11D      		adc r26,__zero_reg__
+ 123 0084 B11D      		adc r27,__zero_reg__
+ 124 0086 8983      		std Y+1,r24
+ 125 0088 9A83      		std Y+2,r25
+ 126 008a AB83      		std Y+3,r26
+ 127 008c BC83      		std Y+4,r27
+ 128 008e 00C0      		rjmp .L3
+ 129               		.cfi_endproc
+ 130               	.LFE0:
+ 132               	.global	lcd_reset
+ 134               	lcd_reset:
+ 135               	.LFB1:
+  17:p.c           **** 
+  18:p.c           **** 
+  19:p.c           **** void lcd_reset(void)
+  20:p.c           **** {
+ 136               		.loc 1 20 1 is_stmt 1 view -0
+ 137               		.cfi_startproc
+ 138               	/* prologue: function */
+ 139               	/* frame size = 0 */
+ 140               	/* stack size = 0 */
+ 141               	.L__stack_usage = 0
+  21:p.c           **** 	SET_VDC_ON;
+ 142               		.loc 1 21 2 view .LVU20
+ 143 0090 2B9A      		sbi 0x5,3
+  22:p.c           **** 	wait_ms(20);
+ 144               		.loc 1 22 2 view .LVU21
+ 145 0092 64E1      		ldi r22,lo8(20)
+ 146 0094 70E0      		ldi r23,0
+ 147 0096 80E0      		ldi r24,0
+ 148 0098 90E0      		ldi r25,0
+ 149 009a 0E94 0000 		call wait_ms
+ 150               	.LVL2:
+  23:p.c           **** 	SET_VDC_OFF;
+ 151               		.loc 1 23 2 view .LVU22
+ 152 009e 2B98      		cbi 0x5,3
+  24:p.c           **** 	wait_ms(20);
+ 153               		.loc 1 24 2 view .LVU23
+ 154 00a0 64E1      		ldi r22,lo8(20)
+ 155 00a2 70E0      		ldi r23,0
+ 156 00a4 80E0      		ldi r24,0
+ 157 00a6 90E0      		ldi r25,0
+ 158 00a8 0E94 0000 		call wait_ms
+ 159               	.LVL3:
+  25:p.c           **** 	SET_VDC_ON;
+ 160               		.loc 1 25 2 view .LVU24
+ 161 00ac 2B9A      		sbi 0x5,3
+ 162               	/* epilogue start */
+  26:p.c           **** }
+ 163               		.loc 1 26 1 is_stmt 0 view .LVU25
+ 164 00ae 0895      		ret
+ 165               		.cfi_endproc
+ 166               	.LFE1:
+ 168               	.global	lcd
+ 170               	lcd:
+ 171               	.LVL4:
+ 172               	.LFB2:
+  27:p.c           **** 
+  28:p.c           **** 
+  29:p.c           **** 
+  30:p.c           **** // rs: 1 if data, 0 if instruction 
+  31:p.c           **** // rw: 1 if read operation, 0 if write operation
+  32:p.c           **** // send_data: the data to be sent
+  33:p.c           **** // return value: the value read from the display
+  34:p.c           **** unsigned char lcd(unsigned char rs, unsigned char rw, unsigned char send_data, unsigned char eight_
+  35:p.c           **** {
+ 173               		.loc 1 35 1 is_stmt 1 view -0
+ 174               		.cfi_startproc
+ 175               	/* prologue: function */
+ 176               	/* frame size = 0 */
+ 177               	/* stack size = 0 */
+ 178               	.L__stack_usage = 0
+  36:p.c           **** 	unsigned char read_data = 0;
+ 179               		.loc 1 36 2 view .LVU27
+  37:p.c           **** 
+  38:p.c           **** 	// Bis auf PB3 (VDC) alle Bits von PORTB auf 0 setzen
+  39:p.c           **** 	// danach können entsprechende Bits mit ODER-Operationen gesetzt werden
+  40:p.c           **** 
+  41:p.c           **** 
+  42:p.c           **** 	// High-Pegel an RS ausgeben, falls rs == 1
+  43:p.c           **** 
+  44:p.c           **** 
+  45:p.c           **** 	// High-Pegel an RW ausgeben, falls rw == 1
+  46:p.c           **** 
+  47:p.c           **** 
+  48:p.c           **** 	// mind. 140 ns abwarten; 3 Zyklen zu je 50 ns => 150 ns
+  49:p.c           **** 
+  50:p.c           **** 
+  51:p.c           **** 	// Falls es sich um eine Lese-Operation handelt
+  52:p.c           **** 	if(rw)	
+ 180               		.loc 1 52 2 view .LVU28
+  53:p.c           **** 	{
+  54:p.c           **** 		// ***** Die oberen 4 Bits einlesen (bzw. 8-Bit-Operation) *****
+  55:p.c           **** 
+  56:p.c           **** 		// PB7, PB6, PB5 und PB4 als Eingang konfigurieren
+  57:p.c           **** 		// RS, RW, E und VDC bleiben als Ausgang konfiguriert
+  58:p.c           **** 
+  59:p.c           **** 
+  60:p.c           **** 		// Steigende Flanke an E erzeugen
+  61:p.c           **** 
+  62:p.c           **** 
+  63:p.c           **** 		// mind. 320 ns abwarten, bis Daten verfügbar sind
+  64:p.c           **** 
+  65:p.c           **** 
+  66:p.c           **** 		// Datenbits einlesen und in oberen 4 Bits von read_data ablegen
+  67:p.c           **** 
+  68:p.c           **** 
+  69:p.c           **** 		// Wartezyklen hinzufügen, High-Pegel von E mind. 450 ns
+  70:p.c           **** 
+  71:p.c           **** 
+  72:p.c           **** 		// E auf Low-Pegel legen
+  73:p.c           **** 
+  74:p.c           **** 
+  75:p.c           **** 		// 500 ns warten, um mind. 1000 ns Zykluszeit von E zu erreichen
+  76:p.c           **** 
+  77:p.c           **** 
+  78:p.c           **** 		// Im 8-Bit-Modus sind jetzt bereits alle Daten gelesen
+  79:p.c           **** 		// Falls eight_bit_mode wahr ist, dann read_data zurückgeben
+  80:p.c           **** 
+  81:p.c           **** 
+  82:p.c           **** 
+  83:p.c           **** 		// ****** Die unteren 4-Bits einlesen ******
+  84:p.c           **** 
+  85:p.c           **** 		// E auf High-Pegel legen
+  86:p.c           **** 
+  87:p.c           **** 
+  88:p.c           **** 		// mind. 320 ns abwarten, bis Daten verfügbar sind
+  89:p.c           **** 
+  90:p.c           **** 
+  91:p.c           **** 		// Datenbits einlesen und an Position 3, 2, 1, 0 von 
+  92:p.c           **** 		// read_data einfügen
+  93:p.c           **** 
+  94:p.c           **** 
+  95:p.c           **** 		// Wartezyklen hinzufügen; mind. 450 ns High-Pegel von E
+  96:p.c           **** 
+  97:p.c           **** 
+  98:p.c           **** 		// E auf Low-Pegel Legen
+  99:p.c           **** 
+ 100:p.c           **** 
+ 101:p.c           **** 		// 500 ns warten, um mind. 1000 ns Zykluszeit von E zu erreichen
+ 102:p.c           **** 
+ 103:p.c           **** 
+ 104:p.c           **** 		// read_data zurückgeben
+ 105:p.c           **** 
+ 106:p.c           **** 	}
+ 107:p.c           **** 
+ 108:p.c           **** 	// Falls es sich um einen Schreibzugriff auf das Display handelt
+ 109:p.c           **** 	else
+ 110:p.c           **** 	{
+ 111:p.c           **** 		// Alle Pins von Port B als Ausgang konfigurieren
+ 112:p.c           **** 
+ 113:p.c           **** 		// E auf High-Pegel legen
+ 114:p.c           **** 
+ 115:p.c           **** 
+ 116:p.c           **** 		// Die oberen vier Bits von send_data über die oberen vier Bits
+ 117:p.c           **** 		// von PORTB an das Display ausgeben
+ 118:p.c           **** 
+ 119:p.c           **** 
+ 120:p.c           **** 
+ 121:p.c           **** 		// 500 ns warten
+ 122:p.c           **** 
+ 123:p.c           **** 		
+ 124:p.c           **** 		// E auf Low-Pegel legen
+ 125:p.c           **** 
+ 126:p.c           **** 
+ 127:p.c           **** 		// nochmal 500 ns warten (Zykluszeit E mind. 1000 ns)
+ 128:p.c           **** 
+ 129:p.c           **** 
+ 130:p.c           **** 		// Im 8-Bit-Modus sind bereits alle Daten gesendet
+ 131:p.c           **** 		// Wenn eight_bit_mode == wahr, dann 0 zurückgeben
+ 132:p.c           **** 
+ 133:p.c           **** 
+ 134:p.c           **** 		// ****** Die unteren 4 Bit senden *****
+ 135:p.c           **** 
+ 136:p.c           **** 		// E auf High-Pegel legen
+ 137:p.c           **** 
+ 138:p.c           **** 
+ 139:p.c           **** 		// Die unteren 4 Bit von send_data über die oberen
+ 140:p.c           **** 		// 4 Bit von PORTB ans Display ausgeben
+ 141:p.c           **** 
+ 142:p.c           **** 
+ 143:p.c           **** 
+ 144:p.c           **** 		// 500 ns warten
+ 145:p.c           **** 
+ 146:p.c           **** 
+ 147:p.c           **** 		// An E Low-Pegel ausgeben
+ 148:p.c           **** 
+ 149:p.c           **** 
+ 150:p.c           **** 		// 500 ns warten um Zykluszeit von E (1000 ns) sicherzustellen
+ 151:p.c           **** 
+ 152:p.c           **** 
+ 153:p.c           **** 		// Funktion lcd durch Rückgabe des Wertes 0 beenden
+ 154:p.c           **** 
+ 155:p.c           **** 	}
+ 181               		.loc 1 155 2 view .LVU29
+ 182               	.LVL5:
+ 183               	/* epilogue start */
+ 156:p.c           **** }
+ 184               		.loc 1 156 1 is_stmt 0 view .LVU30
+ 185 00b0 0895      		ret
+ 186               		.cfi_endproc
+ 187               	.LFE2:
+ 189               	.global	lcd_init
+ 191               	lcd_init:
+ 192               	.LFB3:
+ 157:p.c           **** 
+ 158:p.c           **** 
+ 159:p.c           **** 
+ 160:p.c           **** void lcd_init(void)
+ 161:p.c           **** {
+ 193               		.loc 1 161 1 is_stmt 1 view -0
+ 194               		.cfi_startproc
+ 195               	/* prologue: function */
+ 196               	/* frame size = 0 */
+ 197               	/* stack size = 0 */
+ 198               	.L__stack_usage = 0
+ 162:p.c           **** 	// *** Hier noch im 8-Bit-Modus ***
+ 163:p.c           **** 
+ 164:p.c           **** 	// Solange warten (= busy-Flag auslesen), wie Display 
+ 165:p.c           **** 	// beschäftigt ist (8-Bit-Modus)
+ 166:p.c           **** 
+ 167:p.c           **** 
+ 168:p.c           **** 	// Display einstellen auf 4-Bit-Modus, 2 Zeilen, 5x7 und
+ 169:p.c           **** 	// solange warten, wie Display beschäftigt ist (8-Bit-Modus)
+ 170:p.c           **** 
+ 171:p.c           **** 
+ 172:p.c           **** 	
+ 173:p.c           **** 	// *** Ab hier ist Display im 4-Bit-Modus ***
+ 174:p.c           **** 
+ 175:p.c           **** 	// Display einstellen auf 4-Bit-Modus, 2 Zeilen, 5x7, dann
+ 176:p.c           **** 	// Warten, solange Display beschäftigt ist (im 4 Bit Modus)
+ 177:p.c           **** 
+ 178:p.c           **** 
+ 179:p.c           **** 
+ 180:p.c           **** 	// Display anschalten, Cursor nicht anzeigen, Blinken aus
+ 181:p.c           **** 	// und warten, solange Display beschäftigt ist
+ 182:p.c           **** 
+ 183:p.c           **** 
+ 184:p.c           **** 
+ 185:p.c           **** 	// Display löschen, Cursor an Position (0, 0) und
+ 186:p.c           **** 	// warten, solange Display beschäftigt ist
+ 187:p.c           **** 
+ 188:p.c           **** 
+ 189:p.c           **** 
+ 190:p.c           **** 	// Cursor auf "auto increment" einstellen und
+ 191:p.c           **** 	// warten, solange Display beschäftigt ist
+ 192:p.c           **** 
+ 193:p.c           **** 
+ 194:p.c           **** 
+ 195:p.c           **** 	// DD-RAM Adresse auf 0x00 setzen und
+ 196:p.c           **** 	// warten, solange Display beschäftigt ist
+ 197:p.c           **** 
+ 198:p.c           **** 
+ 199:p.c           **** }
+ 199               		.loc 1 199 1 view .LVU32
+ 200               	/* epilogue start */
+ 201 00b2 0895      		ret
+ 202               		.cfi_endproc
+ 203               	.LFE3:
+ 205               	.global	lcd_clear_display
+ 207               	lcd_clear_display:
+ 208               	.LFB12:
+ 209               		.cfi_startproc
+ 210               	/* prologue: function */
+ 211               	/* frame size = 0 */
+ 212               	/* stack size = 0 */
+ 213               	.L__stack_usage = 0
+ 214               	/* epilogue start */
+ 215 00b4 0895      		ret
+ 216               		.cfi_endproc
+ 217               	.LFE12:
+ 219               	.global	lcd_set_position
+ 221               	lcd_set_position:
+ 222               	.LVL6:
+ 223               	.LFB5:
+ 200:p.c           **** 
+ 201:p.c           **** void lcd_clear_display(void)
+ 202:p.c           **** {
+ 203:p.c           **** 	// Solange warten, bis Busy-Flag 0 ist
+ 204:p.c           **** 
+ 205:p.c           **** 
+ 206:p.c           **** 	// Befehl zum Löschen des Displays abschicken
+ 207:p.c           **** 
+ 208:p.c           **** }
+ 209:p.c           **** 
+ 210:p.c           **** // void lcd_cursor_at_home(void)
+ 211:p.c           **** // {
+ 212:p.c           **** // 	while( lcd(0, 1, 0, 0) & 128 );
+ 213:p.c           **** // 	lcd(0, 0, 0x02, 0);
+ 214:p.c           **** 
+ 215:p.c           **** // }
+ 216:p.c           **** 
+ 217:p.c           **** void lcd_set_position(unsigned char zeile, unsigned char spalte)
+ 218:p.c           **** {
+ 224               		.loc 1 218 1 view -0
+ 225               		.cfi_startproc
+ 226               	/* prologue: function */
+ 227               	/* frame size = 0 */
+ 228               	/* stack size = 0 */
+ 229               	.L__stack_usage = 0
+ 219:p.c           **** 	// zeile = 0, 1
+ 220:p.c           **** 	// Spalte = 0, 1,  ... 15
+ 221:p.c           **** 
+ 222:p.c           **** 
+ 223:p.c           **** 
+ 224:p.c           **** 	// Abbrechen, falls ungültige Zeile oder Spalte angegeben wurde
+ 225:p.c           **** 
+ 226:p.c           **** 
+ 227:p.c           **** 	// DD-RAM-Adresse bestimmen
+ 228:p.c           **** 
+ 229:p.c           **** 
+ 230:p.c           **** 	// Warten, bis Busy-Flag nicht mehr gesetzt ist
+ 231:p.c           **** 
+ 232:p.c           **** 
+ 233:p.c           **** 	// Befehl an das Display schicken
+ 234:p.c           **** 
+ 235:p.c           **** 
+ 236:p.c           **** }
+ 230               		.loc 1 236 1 view .LVU34
+ 231               	/* epilogue start */
+ 232 00b6 0895      		ret
+ 233               		.cfi_endproc
+ 234               	.LFE5:
+ 236               	.global	print_single_character
+ 238               	print_single_character:
+ 239               	.LVL7:
+ 240               	.LFB6:
+ 237:p.c           **** 
+ 238:p.c           **** 
+ 239:p.c           **** void print_single_character(char c)
+ 240:p.c           **** {
+ 241               		.loc 1 240 1 view -0
+ 242               		.cfi_startproc
+ 243               	/* prologue: function */
+ 244               	/* frame size = 0 */
+ 245               	/* stack size = 0 */
+ 246               	.L__stack_usage = 0
+ 241:p.c           **** 
+ 242:p.c           **** 
+ 243:p.c           **** 
+ 244:p.c           **** }
+ 247               		.loc 1 244 1 view .LVU36
+ 248               	/* epilogue start */
+ 249 00b8 0895      		ret
+ 250               		.cfi_endproc
+ 251               	.LFE6:
+ 253               	.global	print_string
+ 255               	print_string:
+ 256               	.LVL8:
+ 257               	.LFB7:
+ 245:p.c           **** 
+ 246:p.c           **** 
+ 247:p.c           **** void print_string(char* s)
+ 248:p.c           **** {
+ 258               		.loc 1 248 1 view -0
+ 259               		.cfi_startproc
+ 260               	/* prologue: function */
+ 261               	/* frame size = 0 */
+ 262               	/* stack size = 0 */
+ 263               	.L__stack_usage = 0
+ 249:p.c           **** 	unsigned int i = 0;
+ 264               		.loc 1 249 2 view .LVU38
+ 250:p.c           **** 
+ 251:p.c           **** 	for(i = 0; s[i]; i++) print_single_character(s[i]);
+ 265               		.loc 1 251 2 view .LVU39
+ 266               		.loc 1 251 13 view .LVU40
+ 267               	/* epilogue start */
+ 252:p.c           **** }
+ 268               		.loc 1 252 1 is_stmt 0 view .LVU41
+ 269 00ba 0895      		ret
+ 270               		.cfi_endproc
+ 271               	.LFE7:
+ 273               	.global	print_integer
+ 275               	print_integer:
+ 276               	.LVL9:
+ 277               	.LFB8:
+ 253:p.c           **** 
+ 254:p.c           **** 
+ 255:p.c           **** void print_integer(long long zahl)
+ 256:p.c           **** {
+ 278               		.loc 1 256 1 is_stmt 1 view -0
+ 279               		.cfi_startproc
+ 280               	/* prologue: function */
+ 281               	/* frame size = 0 */
+ 282               	/* stack size = 0 */
+ 283               	.L__stack_usage = 0
+ 257:p.c           **** 
+ 258:p.c           **** 
+ 259:p.c           **** 
+ 260:p.c           **** 
+ 261:p.c           **** 
+ 262:p.c           **** 
+ 263:p.c           **** 
+ 264:p.c           **** 
+ 265:p.c           **** 
+ 266:p.c           **** 
+ 267:p.c           **** 
+ 268:p.c           **** 
+ 269:p.c           **** 
+ 270:p.c           **** 
+ 271:p.c           **** 
+ 272:p.c           **** 
+ 273:p.c           **** 
+ 274:p.c           **** 
+ 275:p.c           **** 
+ 276:p.c           **** }
+ 284               		.loc 1 276 1 view .LVU43
+ 285               	/* epilogue start */
+ 286 00bc 0895      		ret
+ 287               		.cfi_endproc
+ 288               	.LFE8:
+ 290               	.global	print_float32
+ 292               	print_float32:
+ 293               	.LVL10:
+ 294               	.LFB9:
+ 277:p.c           **** 
+ 278:p.c           **** void print_float32(float zahl)
+ 279:p.c           **** {
+ 295               		.loc 1 279 1 view -0
+ 296               		.cfi_startproc
+ 297               	/* prologue: function */
+ 298               	/* frame size = 0 */
+ 299               	/* stack size = 0 */
+ 300               	.L__stack_usage = 0
+ 280:p.c           **** 	signed char sign, exp, d, rounds;
+ 301               		.loc 1 280 2 view .LVU45
+ 281:p.c           **** 	unsigned char e;
+ 302               		.loc 1 281 2 view .LVU46
+ 282:p.c           **** 	unsigned long f, m, vorkomma;
+ 303               		.loc 1 282 2 view .LVU47
+ 283:p.c           **** 	unsigned long long nachkomma;
+ 304               		.loc 1 283 2 view .LVU48
+ 284:p.c           **** 	unsigned long bits;
+ 305               		.loc 1 284 2 view .LVU49
+ 285:p.c           **** 
+ 286:p.c           **** 	// Compiler-Warnung "-Wstrict-aliasing" temporär ausschalten
+ 287:p.c           **** 	#pragma GCC diagnostic ignored "-Wstrict-aliasing"
+ 288:p.c           **** 
+ 289:p.c           **** 	bits = (*((unsigned long*)(&zahl)));
+ 306               		.loc 1 289 2 view .LVU50
+ 290:p.c           **** 
+ 291:p.c           **** 	// Compiler-Warnung wieder einschalten
+ 292:p.c           **** 	#pragma GCC diagnostic warning "-Wstrict-aliasing"
+ 293:p.c           **** 
+ 294:p.c           **** 
+ 295:p.c           **** 	// Bits: s = 31; e = 30..23; f = 22..0
+ 296:p.c           **** 	sign = bits >> 31;					// Bit 31 ist Vorzeichen
+ 307               		.loc 1 296 2 view .LVU51
+ 297:p.c           **** 	e = ((bits << 1) >> 24);			// Bits 30..23 nach 7..0 schieben
+ 308               		.loc 1 297 2 view .LVU52
+ 298:p.c           **** 	exp = e - 127;						// Exponent: exp = e - K (127)
+ 309               		.loc 1 298 2 view .LVU53
+ 299:p.c           **** 	f = bits & 0x7FFFFF;				// f (fraction) aus 1.f
+ 310               		.loc 1 299 2 view .LVU54
+ 300:p.c           **** 	m = f | 0x800000;					// Mantisse = 1.f
+ 311               		.loc 1 300 2 view .LVU55
+ 301:p.c           **** 
+ 302:p.c           **** 
+ 303:p.c           **** 	// *** Spezialfälle ***
+ 304:p.c           **** 	// Null
+ 305:p.c           **** 	if(bits == 0x00000000 || bits == 0x80000000)
+ 312               		.loc 1 305 2 view .LVU56
+ 306:p.c           **** 	{
+ 307:p.c           **** 		print_string("0,000000");
+ 313               		.loc 1 307 3 view .LVU57
+ 249:p.c           **** 
+ 314               		.loc 1 249 2 view .LVU58
+ 251:p.c           **** }
+ 315               		.loc 1 251 2 view .LVU59
+ 251:p.c           **** }
+ 316               		.loc 1 251 13 view .LVU60
+ 308:p.c           **** 		return;
+ 317               		.loc 1 308 3 view .LVU61
+ 318               	/* epilogue start */
+ 309:p.c           **** 	}
+ 310:p.c           **** 	// Unendlich
+ 311:p.c           **** 	else if(e == 255 && f == 0)
+ 312:p.c           **** 	{
+ 313:p.c           **** 		if(sign) print_single_character('-');
+ 314:p.c           **** 		else print_single_character('+');
+ 315:p.c           **** 		print_string("inf");
+ 316:p.c           **** 		return;
+ 317:p.c           **** 	}
+ 318:p.c           **** 	// Not a number
+ 319:p.c           **** 	else if(e == 255 && f != 0)
+ 320:p.c           **** 	{
+ 321:p.c           **** 		print_string("NaN");
+ 322:p.c           **** 		return;
+ 323:p.c           **** 	}
+ 324:p.c           **** 	// Denormalisierte Zahlen werden nicht unterstützt,
+ 325:p.c           **** 	// da so viele Nuller auf dem Display nicht darstellbar sind
+ 326:p.c           **** 	else if(e == 0 && f != 0)
+ 327:p.c           **** 	{
+ 328:p.c           **** 		print_string("Denorm. not supp");
+ 329:p.c           **** 		return;
+ 330:p.c           **** 	}
+ 331:p.c           **** 
+ 332:p.c           **** 	// *** Normalisierte Gleitkommazahl ***
+ 333:p.c           **** 
+ 334:p.c           **** 	// Zahl nach links (Komma nach rechts) schieben oder nicht schieben
+ 335:p.c           **** 	if(exp >= 0)
+ 336:p.c           **** 	{
+ 337:p.c           **** 		// Vorkomma-Bits 23...(23-exp) extrahieren
+ 338:p.c           **** 		vorkomma = m >> (23 - exp);
+ 339:p.c           **** 
+ 340:p.c           **** 		// Nachkomma-Bits (22-exp)...0 extrahieren
+ 341:p.c           **** 		nachkomma = ( m << (31 - (22 - exp)) ) >> (31 - (22 - exp));
+ 342:p.c           **** 
+ 343:p.c           **** 		// '-', Vorkomma-Stellen und ',' ausgeben
+ 344:p.c           **** 		if(sign) print_single_character('-');
+ 345:p.c           **** 		print_integer(vorkomma);
+ 346:p.c           **** 		print_single_character(',');
+ 347:p.c           **** 
+ 348:p.c           **** 		// Nachkommastellen ausgeben
+ 349:p.c           **** 		// Bits pro Dezimalstelle: log_10(10) / log_10(2) = 3,3219
+ 350:p.c           **** 		rounds = ((23 - exp) / 3.32) + 0.5;
+ 351:p.c           **** 		for( ; rounds > 0; rounds--)
+ 352:p.c           **** 		{
+ 353:p.c           **** 			nachkomma *= 10;
+ 354:p.c           **** 			d = (nachkomma >> (23-exp)) % 10;	// auszugebende Ziffer
+ 355:p.c           **** 			print_single_character(d + '0');	// als Zeichen ausgeben
+ 356:p.c           **** 		}
+ 357:p.c           **** 	}
+ 358:p.c           **** 
+ 359:p.c           **** 	// Zahl nach rechts (Komma nach links) schieben
+ 360:p.c           **** 	else
+ 361:p.c           **** 	{
+ 362:p.c           **** 		if(sign) print_single_character('-');
+ 363:p.c           **** 		print_single_character('0');
+ 364:p.c           **** 		print_single_character(',');
+ 365:p.c           **** 
+ 366:p.c           **** 		nachkomma = m;
+ 367:p.c           **** 
+ 368:p.c           **** 		rounds = ((23 - exp) / 3.32) + 0.5;
+ 369:p.c           **** 		for( ; rounds > 0; rounds--)
+ 370:p.c           **** 		{
+ 371:p.c           **** 			nachkomma *= 10;
+ 372:p.c           **** 			d = (nachkomma >> (23-exp)) % 10;
+ 373:p.c           **** 			print_single_character(d + '0');
+ 374:p.c           **** 		}
+ 375:p.c           **** 	}
+ 376:p.c           **** }
+ 319               		.loc 1 376 1 is_stmt 0 view .LVU62
+ 320 00be 0895      		ret
+ 321               		.cfi_endproc
+ 322               	.LFE9:
+ 324               		.section	.text.startup,"ax",@progbits
+ 325               	.global	main
+ 327               	main:
+ 328               	.LFB10:
+ 377:p.c           **** 
+ 378:p.c           **** int main(void)
+ 379:p.c           **** {
+ 329               		.loc 1 379 1 is_stmt 1 view -0
+ 330               		.cfi_startproc
+ 331               	/* prologue: function */
+ 332               	/* frame size = 0 */
+ 333               	/* stack size = 0 */
+ 334               	.L__stack_usage = 0
+ 380:p.c           **** 	DDRD = 1;	// Data Direction LED
+ 335               		.loc 1 380 2 view .LVU64
+ 336               		.loc 1 380 7 is_stmt 0 view .LVU65
+ 337 0000 81E0      		ldi r24,lo8(1)
+ 338 0002 8AB9      		out 0xa,r24
+ 381:p.c           **** 	PORTD = 0;	// LED off
+ 339               		.loc 1 381 2 is_stmt 1 view .LVU66
+ 340               		.loc 1 381 8 is_stmt 0 view .LVU67
+ 341 0004 1BB8      		out 0xb,__zero_reg__
+ 382:p.c           **** 
+ 383:p.c           **** 
+ 384:p.c           **** 	// while(1)
+ 385:p.c           **** 	// {
+ 386:p.c           **** 	// 	TOGGLE_LED;
+ 387:p.c           **** 	// 	wait_ms(1000);	// Werte: 1000, 100, 10, 1
+ 388:p.c           **** 	// }
+ 389:p.c           **** 
+ 390:p.c           **** 	lcd_reset();
+ 342               		.loc 1 390 2 is_stmt 1 view .LVU68
+ 343 0006 0E94 0000 		call lcd_reset
+ 344               	.LVL11:
+ 391:p.c           **** 	lcd_init();
+ 345               		.loc 1 391 2 view .LVU69
+ 346               	.LBB36:
+ 347               	.LBI36:
+ 160:p.c           **** {
+ 348               		.loc 1 160 6 view .LVU70
+ 349               	.LBB37:
+ 199:p.c           **** 
+ 350               		.loc 1 199 1 view .LVU71
+ 351               	.L16:
+ 352               	.LBE37:
+ 353               	.LBE36:
+ 392:p.c           **** 
+ 393:p.c           **** 
+ 394:p.c           **** 	// unsigned long v = 0x7F800000;	// +inf
+ 395:p.c           **** 	// unsigned long v = 0xFF800000;	// -inf
+ 396:p.c           **** 	// unsigned long v = 0x00000001;		// NaN
+ 397:p.c           **** 	// print_float32((*((float*)((unsigned long*) &v))));
+ 398:p.c           **** 
+ 399:p.c           **** 
+ 400:p.c           **** 	// AUFGABE:
+ 401:p.c           **** 	// Zahl -1132.23845 mit selbstgebauter Funktion print_float32 und 
+ 402:p.c           **** 	// mit printf  ausgeben; man sieht: printf gibt noch Stellen aus,
+ 403:p.c           **** 	// die gar keine gültige Wertigkeit mehr haben.
+ 404:p.c           **** 	print_float32(-1132.23845);	// -1132,2384
+ 405:p.c           **** 	// printf("%f", -1132.23845);	// -1132.238403
+ 406:p.c           **** 
+ 407:p.c           **** 
+ 408:p.c           **** 	while(1);
+ 354               		.loc 1 408 2 discriminator 1 view .LVU72
+ 355               		.loc 1 408 10 discriminator 1 view .LVU73
+ 356               		.loc 1 408 7 discriminator 1 view .LVU74
+ 357 000a 00C0      		rjmp .L16
+ 358               		.cfi_endproc
+ 359               	.LFE10:
+ 361               		.text
+ 362               	.Letext0:
+ 363               		.file 2 "/opt/homebrew/Cellar/avr-gcc@9/9.5.0/avr/include/stdint.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 p.c
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:2      *ABS*:0000003e __SP_H__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:3      *ABS*:0000003d __SP_L__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:4      *ABS*:0000003f __SREG__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:5      *ABS*:0000003b __RAMPZ__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:6      *ABS*:00000000 __tmp_reg__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:7      *ABS*:00000001 __zero_reg__
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:13     .text:00000000 wait_ms
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:17     .text:00000000 .Loc.0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:18     .text:00000000 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:19     .text:00000000 .Loc.1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:48     .text:0000001a .Loc.2
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:49     .text:0000001a .Loc.3
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:50     .text:0000001a .Loc.4
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:56     .text:00000022 .Loc.5
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:57     .text:00000022 .Loc.6
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:62     .text:0000002a .Loc.7
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:69     .text:00000034 .Loc.8
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:80     .text:00000046 .Loc.9
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:81     .text:00000046 .Loc.10
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:87     .text:0000004e .Loc.11
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:88     .text:0000004e .Loc.12
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:93     .text:00000056 .Loc.13
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:99     .text:00000060 .Loc.14
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:100    .text:00000060 .Loc.15
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:114    .text:00000078 .Loc.16
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:115    .text:00000078 .Loc.17
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:116    .text:00000078 .Loc.18
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:129    .text:00000090 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:134    .text:00000090 lcd_reset
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:136    .text:00000090 .Loc.19
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:137    .text:00000090 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:142    .text:00000090 .Loc.20
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:144    .text:00000092 .Loc.21
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:151    .text:0000009e .Loc.22
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:153    .text:000000a0 .Loc.23
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:160    .text:000000ac .Loc.24
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:163    .text:000000ae .Loc.25
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:165    .text:000000b0 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:170    .text:000000b0 lcd
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:173    .text:000000b0 .Loc.26
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:174    .text:000000b0 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:179    .text:000000b0 .Loc.27
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:180    .text:000000b0 .Loc.28
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:181    .text:000000b0 .Loc.29
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:184    .text:000000b0 .Loc.30
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:186    .text:000000b2 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:191    .text:000000b2 lcd_init
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:193    .text:000000b2 .Loc.31
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:194    .text:000000b2 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:199    .text:000000b2 .Loc.32
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:202    .text:000000b4 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:207    .text:000000b4 lcd_clear_display
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:209    .text:000000b4 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:216    .text:000000b6 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:221    .text:000000b6 lcd_set_position
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:224    .text:000000b6 .Loc.33
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:225    .text:000000b6 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:230    .text:000000b6 .Loc.34
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:233    .text:000000b8 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:238    .text:000000b8 print_single_character
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:241    .text:000000b8 .Loc.35
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:242    .text:000000b8 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:247    .text:000000b8 .Loc.36
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:250    .text:000000ba L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:255    .text:000000ba print_string
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:258    .text:000000ba .Loc.37
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:259    .text:000000ba L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:264    .text:000000ba .Loc.38
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:265    .text:000000ba .Loc.39
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:266    .text:000000ba .Loc.40
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:268    .text:000000ba .Loc.41
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:270    .text:000000bc L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:275    .text:000000bc print_integer
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:278    .text:000000bc .Loc.42
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:279    .text:000000bc L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:284    .text:000000bc .Loc.43
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:287    .text:000000be L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:292    .text:000000be print_float32
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:295    .text:000000be .Loc.44
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:296    .text:000000be L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:301    .text:000000be .Loc.45
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:302    .text:000000be .Loc.46
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:303    .text:000000be .Loc.47
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:304    .text:000000be .Loc.48
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:305    .text:000000be .Loc.49
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:306    .text:000000be .Loc.50
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:307    .text:000000be .Loc.51
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:308    .text:000000be .Loc.52
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:309    .text:000000be .Loc.53
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:310    .text:000000be .Loc.54
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:311    .text:000000be .Loc.55
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:312    .text:000000be .Loc.56
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:313    .text:000000be .Loc.57
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:314    .text:000000be .Loc.58
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:315    .text:000000be .Loc.59
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:316    .text:000000be .Loc.60
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:317    .text:000000be .Loc.61
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:319    .text:000000be .Loc.62
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:321    .text:000000c0 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:327    .text.startup:00000000 main
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:329    .text.startup:00000000 .Loc.63
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:330    .text.startup:00000000 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:335    .text.startup:00000000 .Loc.64
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:336    .text.startup:00000000 .Loc.65
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:339    .text.startup:00000004 .Loc.66
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:340    .text.startup:00000004 .Loc.67
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:342    .text.startup:00000006 .Loc.68
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:345    .text.startup:0000000a .Loc.69
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:348    .text.startup:0000000a .Loc.70
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:350    .text.startup:0000000a .Loc.71
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:354    .text.startup:0000000a .Loc.72
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:355    .text.startup:0000000a .Loc.73
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:356    .text.startup:0000000a .Loc.74
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:358    .text.startup:0000000c L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:364    .text:000000c0 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:361    .text.startup:0000000c L0
+                     .debug_frame:00000000 L0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:79     .text:00000046 .L5
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:113    .text:00000078 .L4
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:55     .text:00000022 .L2
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:86     .text:0000004e .L3
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:351    .text.startup:0000000a .L16
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:929    .debug_abbrev:00000000 .Ldebug_abbrev0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1682   .debug_ranges:00000000 .Ldebug_ranges0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1690   .debug_line:00000000 .Ldebug_line0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:328    .text.startup:00000000 .LFB10
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:359    .text.startup:0000000c .LFE10
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:347    .text.startup:0000000a .LBI36
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:346    .text.startup:0000000a .LBB36
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:353    .text.startup:0000000a .LBE36
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:344    .text.startup:0000000a .LVL11
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:223    .text:000000b6 .LFB5
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:234    .text:000000b8 .LFE5
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:172    .text:000000b0 .LFB2
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:187    .text:000000b2 .LFE2
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1512   .debug_loc:00000004 .LLST2
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1507   .debug_loc:00000000 .LVUS2
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:135    .text:00000090 .LFB1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:166    .text:000000b0 .LFE1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:150    .text:0000009e .LVL2
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:159    .text:000000ac .LVL3
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:15     .text:00000000 .LFB0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:130    .text:00000090 .LFE0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1526   .debug_loc:00000025 .LLST0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1562   .debug_loc:00000070 .LLST1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1557   .debug_loc:0000006c .LVUS1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:192    .text:000000b2 .LFB3
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:203    .text:000000b4 .LFE3
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:240    .text:000000b8 .LFB6
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:251    .text:000000ba .LFE6
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:257    .text:000000ba .LFB7
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:271    .text:000000bc .LFE7
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1590   .debug_loc:0000009e .LLST3
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1587   .debug_loc:0000009c .LVUS3
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:277    .text:000000bc .LFB8
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:288    .text:000000be .LFE8
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:294    .text:000000be .LFB9
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:322    .text:000000c0 .LFE9
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1601   .debug_loc:000000b4 .LLST4
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1598   .debug_loc:000000b2 .LVUS4
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1615   .debug_loc:000000cd .LLST5
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1612   .debug_loc:000000cb .LVUS5
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1630   .debug_loc:000000ea .LLST6
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1627   .debug_loc:000000e8 .LVUS6
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1649   .debug_loc:0000010b .LLST7
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:1646   .debug_loc:00000109 .LVUS7
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:171    .text:000000b0 .LVL4
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:182    .text:000000b0 .LVL5
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:21     .text:00000002 .LCFI0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:25     .text:00000004 .LCFI1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:30     .text:00000008 .LCFI2
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:33     .text:0000000a .LCFI3
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:14     .text:00000000 .LVL0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:47     .text:0000001a .LVL1
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:256    .text:000000ba .LVL8
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:293    .text:000000be .LVL10
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:365    .debug_info:00000000 .Ldebug_info0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:9      .text:00000000 .Ltext0
+/var/folders/nc/hgfd6qws17d9h8fz8ky_99vh0000gn/T//cc7LUYLJ.s:362    .text:000000c0 .Letext0
+
+NO UNDEFINED SYMBOLS
