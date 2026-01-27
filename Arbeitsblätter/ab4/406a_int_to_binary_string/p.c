@@ -3,17 +3,14 @@
 
 void int_to_binary_string(int n, char *s)
 {
+	int i;
+	int maxValue = sizeof(int) * 8;
 
+	for(i=0;i<maxValue;i++){
+		*(s+i) = (n >> (maxValue -i -1) & 1) + '0';
+	}
 
-
-
-
-
-
-
-
-
-
+	*(s+i) = '\0';
 }
 
 

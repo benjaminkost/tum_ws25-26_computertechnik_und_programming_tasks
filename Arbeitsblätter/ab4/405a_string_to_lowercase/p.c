@@ -3,21 +3,16 @@
 
 int string_to_lowercase(char *s)
 {
+	int captalLetters=0;
 
+	for(int i = 0; *(s+i);i++){
+		if(*(s+i)>=0x41 && *(s+i)<=0x5A){
+			*(s+i) += 0x61-0x41;
+			captalLetters++;
+		}
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+	return captalLetters;
 }
 
 int main()

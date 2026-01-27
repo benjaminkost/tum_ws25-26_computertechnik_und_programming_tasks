@@ -75,13 +75,26 @@ int main()
 	}
 
 	// Wert berechnen und in Variable sum ablegen
-	for(int i = 0; i < l;i++){
-		if (i != 0 && (vs[i-1] < vs[i])){
-			sum += (vs[i] -2*vs[i-1]);
-		} else{
-			sum += vs[i]; //
-		}
-	}
+    sum = 0;
+    for(int i = 0; i < l; i++)
+    {
+        // Abbruch, wenn mehr als 4 identische Werte hintereinander kommen
+        if(i >= 4 && vs[i] == vs[i-1] && vs[i-1] == vs[i-2] &&
+           vs[i-2] == vs[i-3] && vs[i-3] == vs[i-4] ) return -1;
+
+        sum += vs[i];
+        if(i > 0 && (vs[i-1] < vs[i]))
+        {
+            // Abzieh-Fälle prüfen (IV, IX, XL, XC, CD, CM)
+            if( (vs[i-1] == 1 && (vs[i] == 5 || vs[i] == 10) ) ||
+                (vs[i-1] == 10 && (vs[i] == 50 || vs[i] == 100) ) ||
+                (vs[i-1] == 100 && (vs[i] == 500 || vs[i] == 1000) ) )
+
+                sum -= 2 * vs[i-1]; // zuviel addiertes 2x subtrahieren
+
+            else return -1;
+        }
+    }
 
 	printf("Der Wert ist %d.\n", sum);
 } // main
