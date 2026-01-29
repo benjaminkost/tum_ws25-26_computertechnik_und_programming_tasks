@@ -25,7 +25,7 @@ int main()
 
     l = i;
     for(int i = 0; i < l; i++){
-        printf("Zahl: %i\n", *(a+i));
+        printf("%i\n", *(a+i));
     }
 
 

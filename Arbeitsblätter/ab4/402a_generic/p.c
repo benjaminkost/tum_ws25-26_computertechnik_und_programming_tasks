@@ -30,5 +30,5 @@ int main()
 	scanf("%lf", &wert_double);
 
 	printf("Doppelter Integer-Wert: %d\n", wert_verdoppeln(wert_int) );
-	printf("Doppelter Double-Wert: %lf\n", wert_verdoppeln(wert_double) );
+	printf("Doppelter Double-Wert: %.2lf\n", wert_verdoppeln(wert_double) );
 }
