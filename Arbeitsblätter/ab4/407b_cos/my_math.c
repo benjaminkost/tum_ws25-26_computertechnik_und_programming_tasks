@@ -14,8 +14,7 @@ double my_cos(double x)
 
 	// x = x - n * two_pi;
 	// ToDo: Neue Berechnung mit two_pi_high und two_pi_low
-
-
+	x = x - n * two_pi_high - n * two_pi_low;
 
 	// x Quadrat berechnen
 	x2 = x * x;

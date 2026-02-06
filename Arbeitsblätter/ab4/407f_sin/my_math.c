@@ -15,19 +15,14 @@ double my_sin(double x)
 	x2 = x * x;									// x Quadrat berechnen
 
 	// Sinus berechnen
+	double term = x;
+	double sum = x; 
 
-
-
-
-
-
-
-
-
-
-
-
-
+	for(int i = 3; i < 45;i+=2){
+		term *= -x2/((i)*(i-1));
+		sum += term;
+	}
+	return sum;
 }
 
 double my_cos(double x)
