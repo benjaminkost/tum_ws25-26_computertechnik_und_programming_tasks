@@ -2,9 +2,9 @@
 
 void f(void)
 {
-
-
-
+	static int i = 0;
+	
+	printf("Wert von i: %i", i++);
 }
 
 int main()

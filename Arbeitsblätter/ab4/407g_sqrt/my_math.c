@@ -11,34 +11,25 @@ static double two_pi_low = 2.4492935982947059e-16;
 
 double my_sqrt(double x)
 {
+	if (x == 0){
+        return 0.0;
+    } else if (x < 0){
+        return 0x7FF8000000000000; //NaN 0111 1111 1111 1000 0000 0000 0000
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	double sum = 0.5*x;
+	double term = sum;
+	for(int i = 0; i < 50; i++){
+		term = 0.5*term+0.5*(x/term);
+		sum = term;
+	}
+    
+    return sum;
 }
 
 double my_sin(double x)
 {
+
 	double x2;
 	long long n;
 

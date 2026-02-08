@@ -7,13 +7,13 @@ double my_cos(double x)
 
 	// Hier den Variablen two_pi_high_ll und two_pi_low_ll die 
 	// ermittelten Werte hexadezimal, d.h. als Ganzzahl, zuweisen
-
-
+	two_pi_high_ll = 0x401921FB54442D18;
+	two_pi_low_ll = 0x3CB1A62633145C06;
 
 	// Hier die Bits aus two_pi_high_ll und two_pi_low_ll so in 
 	// two_pi_high und two_pi_low kopieren, dass die Bits erhalten bleiben
-
-
+	two_pi_high = *((double*) &two_pi_high_ll);
+	two_pi_low = *((double*) &two_pi_low_ll);
 
 	double x2;
 	long long n;
