@@ -1,0 +1,9 @@
+        LOC     Data_Segment
+        GREG    @
+A       OCTA    #2   
+
+
+        LOC     #100
+MAIN    LDO     $1,A
+        ADD     $1,$1,1
+        BP      $1,#fffffffe //-2

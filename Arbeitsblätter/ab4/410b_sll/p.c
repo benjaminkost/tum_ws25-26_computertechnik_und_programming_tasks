@@ -67,24 +67,24 @@ struct Song* get_song()
 
 	// Zur Laufzeit Speicher für einen Song allozieren und den Zeiger
 	// auf diesen Speicher der Variable p zuweisen
-
+	p = malloc(sizeof(struct Song));
 
 	// Aus Funktion get_song mit Rückgabewert NULL zurückspringen, 
 	// falls Speicher nicht zugewiesen werden konnte
-
+	if (p==NULL) return NULL;
 
 	printf("Name: ");
 	
 	// Name in die Variable "name" der allozierten Struktur einlesen
-
+	scanf("%s", p->name);
 	
 	printf("Dauer: ");
 
 	// Dauer in die Variable "dauer" der allozierten Struktur einlesen
-
+	scanf("%i", &p->duration);
 
 	// Allozierten und eingelesenen Song zurückgeben
-
+	return p;
 }
 
 
@@ -109,18 +109,15 @@ void add_song_at_the_end(struct Song *p)
 void add_song_at_the_beginning(struct Song *p)
 {
 	// Wenn die Liste leer ist
-
-
-
-
-
-
-	// Wenn die Liste nicht leer ist
-
-
-
-
-
+	if(pFirst == NULL){
+		pFirst = p;
+		pLast = p;
+		p->pNext = NULL;
+	}else { // Wenn die Liste nicht leer ist
+		pLast->Next = p;
+		p->pNext = NULL;
+		pLast = p;
+	} 
 }
 
 void print_all_songs()
